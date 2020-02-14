@@ -95,10 +95,19 @@ if [ $host == "flophouse" ]; then
         # parch="rhel7-gnu48-complex-opt-c"
         parch="rhel7-real-c-static"
         parch="rhel7-complex-c-static"
-        if [ "$build"x = "Debug"x ]; then
-            parch="rhel7-real-c-static-debug"
-        fi
+#bjp        if [ "$build"x = "Debug"x ]; then
+#bjp            parch="rhel7-real-c-static-debug"
+#bjp        fi
         # pdir="/net/flophouse/files0/perksoft/petsc-3.10.3"
+        # parch="rhel7-real-c-static-debug"
+        pdir="/net/flophouse/files0/perksoft/petsc-3.10.3"
+        parch="rhel7-real-c-static"
+        # parch="rhel7-complex-c-static"
+        pdir="/net/flophouse/files0/perksoft/petsc-3.11.3"
+        parch="rhel7-complex-c-static"
+        parch="rhel7-real-c-static"
+        pdir="/net/flophouse/files0/perksoft/petsc-3.9.4"
+        parch="rhel7-complex-c-static"
     fi
 
     cplexroot="/opt/ibm/ILOG/CPLEX_Studio1261"
@@ -292,8 +301,11 @@ elif [ $host == "tlaloc" ]; then
         pdir="/net/flophouse/files0/perksoft/petsc-3.8.4"
         parch="rhel6-complex-c-static"
         parch="rhel6-real-c-static"
-        pdir="/net/flophouse/files0/perksoft/petsc-3.9.4"
-        parch="rhel6-real-c-static"
+        #parch="rhel6-real-c-static"
+        #pdir="/net/flophouse/files0/perksoft/petsc-3.9.4"
+        #parch="rhel6-real-c-static"
+        pdir="/net/flophouse/files0/perksoft/petsc-3.11.3"
+        parch="rhel6-complex-c-static"
     fi
 
     cmake3 $options \
@@ -307,7 +319,7 @@ elif [ $host == "tlaloc" ]; then
           -D MPIEXEC:STRING="mpiexec" \
           -D USE_GLPK:BOOL=OFF \
           -D MPIEXEC_MAX_NUMPROCS:STRING="2" \
-          -D GRIDPACK_TEST_TIMEOUT:STRING=10 \
+          -D GRIDPACK_TEST_TIMEOUT:STRING=60 \
           -D CMAKE_INSTALL_PREFIX:PATH="${prefix}/gridpack" \
           $common_flags ..
 
