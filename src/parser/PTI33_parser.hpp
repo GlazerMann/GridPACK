@@ -1335,6 +1335,9 @@ class PTI33_parser : public BasePTIParser<_network>
            */
           p_branchData[l_idx]->addValue(TRANSFORMER_MAG2,
               atof(split_line[8].c_str()),nelems);
+			  
+		  p_branchData[l_idx]->addValue(BRANCH_B,
+              atof(split_line[8].c_str()),nelems);										   
 
           /*
            * type: integer
