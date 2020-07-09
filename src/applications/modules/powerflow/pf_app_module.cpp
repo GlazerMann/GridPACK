@@ -348,6 +348,56 @@ bool gridpack::powerflow::PFAppModule::solve()
 #else
     boost::shared_ptr<gridpack::math::Vector> X(PQ->clone());
 #endif
+  solver.configure(cursor);
+  timer->stop(t_csolv);
+
+  // First iteration
+  X->zero(); //might not need to do this
+  //p_busIO->header("\nCalling solver\n");
+  int t_lsolv = timer->createCategory("Powerflow: Solve Linear Equation");
+  timer->start(t_lsolv);
+//    char dbgfile[32];
+//    sprintf(dbgfile,"j0.bin");
+//    J->saveBinary(dbgfile);
+//    sprintf(dbgfile,"pq0.bin");
+//    PQ->saveBinary(dbgfile);
+  try {
+    solver.solve(*PQ, *X);
+  } catch (const gridpack::Exception e) {
+    std::string w(e.what());
+    if (!p_no_print) {
+      printf("p[%d] hit exception: %s\n",
+          p_network->communicator().rank(),
+          w.c_str());
+      p_busIO->header("Solver failure\n\n");
+    }
+    timer->stop(t_lsolv);
+
+    return false;
+  }
+  timer->stop(t_lsolv);
+  tol = PQ->normInfinity();
+
+  // Create timer for map to bus
+  int t_bmap = timer->createCategory("Powerflow: Map to Bus");
+  int t_updt = timer->createCategory("Powerflow: Bus Update");
+  char ioBuf[128];
+
+  while (real(tol) > p_tolerance && iter < p_max_iteration) {
+    // Push current values in X vector back into network components
+    // Need to implement setValues method in PFBus class in order for this to
+    // work
+    timer->start(t_bmap);
+    p_factory->setMode(RHS);
+    vMap.mapToBus(X);
+    timer->stop(t_bmap);
+
+    // Exchange data between ghost buses (I don't think we need to exchange data
+    // between branches)
+    timer->start(t_updt);
+  //  p_factory->checkQlimViolations();
+    p_network->updateBuses();
+    timer->stop(t_updt);
 
     gridpack::utility::Configuration::CursorPtr cursor;
     cursor = p_config->getCursor("Configuration.Powerflow");
@@ -389,6 +439,12 @@ bool gridpack::powerflow::PFAppModule::solve()
     }
     timer->stop(t_lsolv);
     tol = PQ->normInfinity();
+    if (!p_no_print) {
+      sprintf(ioBuf,"\nIteration %d Tol: %12.6e\n",iter+1,real(tol));
+    }
+    p_busIO->header(ioBuf);
+    iter++;
+  }
 
     // Create timer for map to bus
     int t_bmap = timer->createCategory("Powerflow: Map to Bus");

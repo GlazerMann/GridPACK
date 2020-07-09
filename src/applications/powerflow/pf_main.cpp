@@ -83,6 +83,9 @@ int main(int argc, char **argv)
     if (!noPrint) {
       timer ->dump();
     }
+    if (!noPrint) {
+      timer ->dump();
+    }
   }
 
   return 0;
