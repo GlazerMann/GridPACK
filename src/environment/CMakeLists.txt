@@ -25,6 +25,7 @@ gridpack_set_library_version(gridpack_environment)
 
 set(target_libraries
    gridpack_environment
+   gridpack_parallel
    gridpack_math
    ${GA_LIBRARIES}
    ${MPI_CXX_LIBRARIES}
