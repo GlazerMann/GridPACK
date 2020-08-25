@@ -8,7 +8,6 @@
 	url = https://github.com/wperkins/ga.git
         branch = for-gridpack
 
-[submodule "pybind11"]
-	path = pybind11
+[submodule "python/pybind11"]
+	path = python/pybind11
 	url = https://github.com/pybind/pybind11.git
-	branch = v2.4
