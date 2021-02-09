@@ -1724,6 +1724,7 @@ class BasePTIParser : public BaseParser<_network>
       }
     }
 
+
     /**
      * Check to see if string is blank
      * @return true if no non-blank characters are found
