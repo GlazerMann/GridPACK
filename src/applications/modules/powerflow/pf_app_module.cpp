@@ -301,26 +301,32 @@ bool gridpack::powerflow::PFAppModule::solve()
 #endif
     timer->stop(t_mmap);
 
-    timer->start(t_fact);
-    p_factory->setMode(S_Cal);
-    timer->stop(t_fact);
-    timer->start(t_cmap);
-    gridpack::mapper::BusVectorMap<PFNetwork> vvMap(p_network);
-    timer->stop(t_cmap);
-    int t_vmap = timer->createCategory("Powerflow: Map to Vector");
+  // make Sbus components to create S vector
+  timer->start(t_fact);
+  p_factory->setSBus();
+  timer->stop(t_fact);
+//  p_busIO->header("\nIteration 0\n");
 
-    // make Sbus components to create S vector
-    timer->start(t_fact);
-    p_factory->setSBus();
-    timer->stop(t_fact);
-    //  p_busIO->header("\nIteration 0\n");
-
-    // Set PQ
-    timer->start(t_cmap);
-    p_factory->setMode(RHS); 
-    gridpack::mapper::BusVectorMap<PFNetwork> vMap(p_network);
-    timer->stop(t_cmap);
-    timer->start(t_vmap);
+  // Set PQ
+  timer->start(t_cmap);
+  p_factory->setMode(RHS); 
+  gridpack::mapper::BusVectorMap<PFNetwork> vMap(p_network);
+  timer->stop(t_cmap);
+  timer->start(t_vmap);
+#ifdef USE_REAL_VALUES
+  boost::shared_ptr<gridpack::math::RealVector> PQ = vMap.mapToRealVector();
+#else
+  boost::shared_ptr<gridpack::math::Vector> PQ = vMap.mapToVector();
+#endif
+  timer->stop(t_vmap);
+  gridpack::ComplexType  tol_org = PQ->normInfinity();
+  if (!p_no_print) printf ("\n----------test Iteration 0, before PF solve, Tol: %12.6e \n", real(tol_org));
+//  PQ->print();
+  timer->start(t_cmap);
+  p_factory->setMode(Jacobian);
+  gridpack::mapper::FullMatrixMap<PFNetwork> jMap(p_network);
+  timer->stop(t_cmap);
+  timer->start(t_mmap);
 #ifdef USE_REAL_VALUES
     boost::shared_ptr<gridpack::math::RealVector> PQ = vMap.mapToRealVector();
 #else
@@ -444,6 +450,11 @@ bool gridpack::powerflow::PFAppModule::solve()
     }
     p_busIO->header(ioBuf);
     iter++;
+    if (real(tol)> 100.0*real(tol_org)){
+       ret = false;
+       if (!p_no_print) printf ("\n-------------current iteration tol bigger than 100 times of original tol, power flow diverge\n");
+       break;
+    }										
   }
 
     // Create timer for map to bus
