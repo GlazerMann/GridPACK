@@ -807,6 +807,16 @@ void gridpack::powerflow::PFAppModule::saveData()
 }
 
 /**
+ * Save results of powerflow calculation to data collection objects
+ * added by Renke, also modify the original bus mag, ang, 
+ * and the original generator PG QG in the datacollection
+ */
+void gridpack::powerflow::PFAppModule::saveDataAlsotoOrg()
+{
+  p_factory->saveDataAlsotoOrg();
+}
+
+/**
  * get the power flow solution for the specific bus, vmag and v angle
  * @param bus original number, bus solution vmag and v angle
  * @return false if location of bus is not found in
