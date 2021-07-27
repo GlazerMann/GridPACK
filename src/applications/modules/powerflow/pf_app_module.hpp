@@ -23,6 +23,7 @@
 #include "gridpack/configuration/configuration.hpp"
 #include "pf_factory_module.hpp"
 #include "gridpack/parser/dictionary.hpp"
+#include "gridpack/utilities/string_utils.hpp"
 
 namespace gridpack {
 namespace powerflow {
@@ -488,6 +489,11 @@ class PFAppModule
         int bus_id, std::string gen_id, std::string genParam, T value)
     {
       std::vector<int> indices = p_network->getLocalBusIndices(bus_id);
+	  
+	  gridpack::utility::StringUtils util;
+	  std::string clean_id;
+	  clean_id = util.clean2Char(gen_id);
+	  
       if (indices.size() > 0) {
         int i;
         bool ret = false;
@@ -503,7 +509,7 @@ class PFAppModule
             for (j = 0; j<ngen; j++) {
               // Get index of generator
               if (data->getValue(GENERATOR_ID,&gID,j)) {
-                if (gID == gen_id) {
+                if (gID == clean_id) {
                   igen = j;
                   break;
                 }
@@ -536,6 +542,11 @@ class PFAppModule
           std::string loadParam, T value)
     {
       std::vector<int> indices = p_network->getLocalBusIndices(bus_id);
+	  
+	  gridpack::utility::StringUtils util;
+	  std::string clean_id;
+	  clean_id = util.clean2Char(load_id);
+	  
       if (indices.size() > 0) {
         int i;
         bool ret = false;
@@ -550,7 +561,7 @@ class PFAppModule
             std::string lID;
             for (j = 0; j<nload; j++) {
               if (data->getValue(LOAD_ID,&lID,j)) {
-                if (lID == load_id) {
+                if (lID == clean_id) {
                   iload = j;
                   break;
                 }
@@ -613,6 +624,11 @@ class PFAppModule
         std::string branchParam, T value)
     {
       std::vector<int> indices = p_network->getLocalBranchIndices(bus1, bus2);
+	  
+	  gridpack::utility::StringUtils util;
+	  std::string clean_id;
+	  clean_id = util.clean2Char(ckt);
+	  
       if (indices.size() > 0) {
         int i;
         bool ret = false;
@@ -627,7 +643,7 @@ class PFAppModule
             std::string brID;
             for (j=0; j<nbranch; j++) {
               if (data->getValue(BRANCH_CKT,&brID,j)) {
-                if (ckt == brID) {
+                if (clean_id == brID) {
                   ibr = j;
                   break;
                 }
@@ -660,6 +676,11 @@ class PFAppModule
         int bus_id, std::string gen_id, std::string genParam, T *value)
     {
       std::vector<int> indices = p_network->getLocalBusIndices(bus_id);
+	  
+	  gridpack::utility::StringUtils util;
+	  std::string clean_id;
+	  clean_id = util.clean2Char(gen_id);
+	  
       if (indices.size() > 0) {
         int i;
         bool ret = false;
@@ -676,7 +697,7 @@ class PFAppModule
               for (j = 0; j<ngen; j++) {
                 // Get index of generator
                 if (data->getValue(GENERATOR_ID,&gID,j)) {
-                  if (gID == gen_id) {
+                  if (gID == clean_id) {
                     igen = j;
                     break;
                   }
@@ -710,6 +731,11 @@ class PFAppModule
           std::string loadParam, T *value)
     {
       std::vector<int> indices = p_network->getLocalBusIndices(bus_id);
+	  
+	  gridpack::utility::StringUtils util;
+	  std::string clean_id;
+	  clean_id = util.clean2Char(load_id);
+	  	  
       if (indices.size() > 0) {
         int i;
         bool ret = false;
@@ -725,7 +751,7 @@ class PFAppModule
               std::string lID;
               for (j = 0; j<nload; j++) {
                 if (data->getValue(LOAD_ID,&lID,j)) {
-                  if (lID == load_id) {
+                  if (lID == clean_id) {
                     iload = j;
                     break;
                   }
@@ -791,6 +817,11 @@ class PFAppModule
         std::string branchParam, T *value)
     {
       std::vector<int> indices = p_network->getLocalBranchIndices(bus1, bus2);
+	  
+	  gridpack::utility::StringUtils util;
+	  std::string clean_id;
+	  clean_id = util.clean2Char(ckt);
+	  
       if (indices.size() > 0) {
         int i;
         bool ret = false;
@@ -806,7 +837,7 @@ class PFAppModule
               std::string brID;
               for (j=0; j<nbranch; j++) {
                 if (data->getValue(BRANCH_CKT,&brID,j)) {
-                  if (ckt == brID) {
+                  if (clean_id == brID) {
                     ibr = j;
                     break;
                   }
