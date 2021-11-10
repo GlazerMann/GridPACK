@@ -1335,8 +1335,8 @@ class PTI33_parser : public BasePTIParser<_network>
            */
           p_branchData[l_idx]->addValue(TRANSFORMER_MAG2,
               atof(split_line[8].c_str()),nelems);
-			  
-		  p_branchData[l_idx]->addValue(BRANCH_B,
+
+          p_branchData[l_idx]->addValue(BRANCH_B,
               atof(split_line[8].c_str()),nelems);										   
 
           /*
@@ -1418,9 +1418,6 @@ class PTI33_parser : public BasePTIParser<_network>
           double sbase2 = atof(split_line2[2].c_str());
           p_branchData[l_idx]->addValue(TRANSFORMER_SBASE1_2,sbase2,nelems);
 
-
-
-          // Add parameters from line 3
           /*
            * type: float
            * BRANCH_TAP: This is the ratio of WINDV1 and WINDV2
@@ -1431,14 +1428,14 @@ class PTI33_parser : public BasePTIParser<_network>
           p_branchData[l_idx]->addValue(BRANCH_TAP,tap,nelems);
           p_branchData[l_idx]->addValue(TRANSFORMER_WINDV1,windv1,nelems);
           p_branchData[l_idx]->addValue(TRANSFORMER_WINDV2,windv2,nelems);
-		  
-		  
-		  /*
+
+
+          /*
            * type: float
            * BRANCH_R
            */
           double rval = atof(split_line2[0].c_str());
-		  rval  = rval * windv2 * windv2; // need to consider the wnd2 ratio to the req of the transformer
+          rval  = rval * windv2 * windv2; // need to consider the wnd2 ratio to the req of the transformer
           if (sbase2 == p_case_sbase || sbase2 == 0.0) {
             p_branchData[l_idx]->addValue(BRANCH_R,rval,nelems);
           } else {
@@ -1446,14 +1443,14 @@ class PTI33_parser : public BasePTIParser<_network>
             p_branchData[l_idx]->addValue(BRANCH_R,rval,nelems);
           }
           p_branchData[l_idx]->addValue(TRANSFORMER_R1_2,rval,nelems);
-		  
+
 
           /*
            * type: float
            * BRANCH_X
            */
           rval = atof(split_line2[1].c_str());
-		  rval  = rval * windv2 * windv2; // need to consider the wnd2 ratio to the xeq of the transformer
+          rval  = rval * windv2 * windv2; // need to consider the wnd2 ratio to the xeq of the transformer
           if (sbase2 == p_case_sbase || sbase2 == 0.0) {
             p_branchData[l_idx]->addValue(BRANCH_X,rval,nelems);
           } else {
@@ -1463,18 +1460,7 @@ class PTI33_parser : public BasePTIParser<_network>
           p_branchData[l_idx]->addValue(TRANSFORMER_X1_2,rval,nelems);
 
           // Add parameters from line 3
-          /*
-           * type: float
-           * BRANCH_TAP: This is the ratio of WINDV1 and WINDV2
-           */
           ntoken = split_line3.size();
-          double windv1 = atof(split_line3[0].c_str());
-          double windv2 = atof(split_line4[0].c_str());
-          double tap = windv1/windv2;
-          p_branchData[l_idx]->addValue(BRANCH_TAP,tap,nelems);
-          p_branchData[l_idx]->addValue(TRANSFORMER_WINDV1,windv1,nelems);
-          p_branchData[l_idx]->addValue(TRANSFORMER_WINDV2,windv2,nelems);
-
           /*
            * type: float
            * BRANCH_SHIFT

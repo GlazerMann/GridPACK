@@ -28,6 +28,7 @@ set(target_libraries
    gridpack_parallel
    gridpack_math
    ${GA_LIBRARIES}
+   ${Boost_LIBRARIES}
    ${MPI_CXX_LIBRARIES}
 )
 

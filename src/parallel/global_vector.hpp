@@ -115,37 +115,6 @@ public:
   }
 
   /**
-   *  Reset values of existing distributed array
-   * @param vec standard vector containing data
-   * @param idx vector of indices
-   */
-  void resetElements(const std::vector<int> &idx,
-      const std::vector<_data_type> &vec)
-  {
-    int i, size;
-    if (!p_uploaded) {
-      printf("resetElements: Vector has not been previously uploaded!\n");
-      return;
-    }
-    if (idx.size() != vec.size()) {
-      printf("resetElements: vector of indices does not match vector of data\n");
-      return;
-    }
-    size = vec.size();
-    p_index.clear();
-    p_data.clear();
-    for (i=0; i<size; i++) {
-      if (idx[i] >= p_numElems) {
-        printf("resetElements: illegal index %d is greater than vector length %d\n",
-            idx[i],p_numElems);
-        continue;
-      }
-      p_index.push_back(idx[i]);
-      p_data.push_back(vec[i]);
-    }
-  }
-
-  /**
    * Upload data that is held locally into distributed array, so that it is
    * available anywhere in the system
    */
