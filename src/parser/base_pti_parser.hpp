@@ -96,6 +96,38 @@ class BasePTIParser : public BaseParser<_network>
     }
 
     /**
+     * Split PSS/E formatted lines into individual tokens using both blanks and
+     * commas as delimiters
+     * @param line input string from PSS/E file
+     * @return vector of tokens parsed from PSS/E line
+     */
+    std::vector<std::string> splitPSSELine (std::string line)
+    {
+      std::vector<std::string> ret;
+      int i, j;
+      std::vector<std::string>  split_line;
+      // split line into tokens based on comma delimiters
+      boost::algorithm::split(split_line, line, boost::algorithm::is_any_of(","),
+                    boost::token_compress_off);
+      int slen = split_line.size();
+      // parse each token based on blank spaces
+      for (i=0; i<slen; i++) {
+        if (isBlank(split_line[i])) {
+          // If two consecutive commas have nothing in between, replace it with
+          // a zero "0" character. This should be converted to 0 and 0.0 by the
+          // atoi and atof functions, respectively
+          ret.push_back("0");
+        } else {
+          std::vector<std::string> tokens;
+          tokens = p_util.blankTokenizer(split_line[i]);
+          int tlen = tokens.size();
+          for (j=0; j<tlen; j++) ret.push_back(tokens[j]);
+        }
+      }
+      return ret;
+    }
+
+    /**
      * Expand any compound bus models that may need to be generated based on
      * parameters in the .dyr files. This function needs to be called after
      * calling the parser for the .dyr file
@@ -1390,8 +1422,7 @@ class BasePTIParser : public BaseParser<_network>
         idx = record.find('/');
         if (idx != std::string::npos) record.erase(idx,record.length()-idx);
         std::vector<std::string>  split_line;
-        boost::split(split_line, record, boost::algorithm::is_any_of(","),
-            boost::token_compress_on);
+        split_line = splitPSSELine(record);
 
         std::string sval;
         // MODEL TYPE              "MODEL"                  string
@@ -1610,8 +1641,7 @@ class BasePTIParser : public BaseParser<_network>
         idx = record.find('/');
         if (idx != std::string::npos) record.erase(idx,record.length()-idx);
         std::vector<std::string>  split_line;
-        boost::split(split_line, record, boost::algorithm::is_any_of(","),
-            boost::token_compress_on);
+        split_line = splitPSSELine(record);
         std::string sval;
         gridpack::utility::StringUtils util;
         sval = util.trimQuotes(split_line[1]);
@@ -1754,8 +1784,7 @@ class BasePTIParser : public BaseParser<_network>
       p_input_stream.nextLine(line);
       while(p_input_stream.nextLine(line)) {
         std::vector<std::string>  split_line;
-        boost::split(split_line, line, boost::algorithm::is_any_of(","),
-            boost::token_compress_on);
+        split_line = splitPSSELine(line);
 
         uc_params data;
 
@@ -1891,6 +1920,9 @@ class BasePTIParser : public BaseParser<_network>
     std::map<int,int> *p_busMap;
     // Map of PTI index pair to index in p_branchData
     std::map<std::pair<int, int>, int> *p_branchMap;
+
+    // String utility object for splitting lines in PSS/E files
+    gridpack::utility::StringUtils p_util;
 
     /**
      * Data collection object associated with network as a whole

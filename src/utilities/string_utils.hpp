@@ -189,6 +189,7 @@ public:
     }
     int ntok1, ntok2;
     std::vector<std::string> ret;
+    // Find first token
     ntok1 = strcpy.find_first_not_of(' ',0);
     if (strcpy[ntok1] == '\'') {
       ntok2 = strcpy.find('\'',ntok1+1);
@@ -203,6 +204,7 @@ public:
       return ret;
     }
     ret.push_back(strcpy.substr(ntok1,ntok2-ntok1));
+    // ntok1 and ntok2 are initialized. Find remaining tokens
     while (ntok2 < slen-1 && ntok1 != std::string::npos) {
       ntok1 = strcpy.find_first_not_of(' ',ntok2);
       if (strcpy[ntok1] == '\'') {
@@ -223,7 +225,7 @@ public:
         ntok2 = strcpy.find(' ',ntok1);
         if (ntok2 == std::string::npos) ntok2 = slen;
       } 
-      if (ntok2 != std::string::npos) {
+      if (ntok1 != std::string::npos && ntok2 != std::string::npos) {
         ret.push_back(strcpy.substr(ntok1,ntok2-ntok1));
       }
     }
