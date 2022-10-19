@@ -13,6 +13,10 @@
 # Last Change: 2020-05-22 12:12:23 d3g096
 # -------------------------------------------------------------
 
+if (ENABLE_ENVIRONMENT_FROM_COMM)
+  add_definitions(-DENABLE_ENVIRONMENT_FROM_COMM) 
+endif()
+
 add_library(gridpack_environment 
   environment.cpp
   no_print.cpp

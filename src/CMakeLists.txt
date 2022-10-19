@@ -117,6 +117,9 @@ option(USE_GLPK
 option(BUILD_SHARED_LIBS
   "Attempt to build all libraries as shared" OFF)
 
+option(ENABLE_ENVIRONMENT_FROM_COMM,
+  "Create GridPACK environment from communicator",OFF)
+
 
 # turn testing on/off
 option(GRIDPACK_ENABLE_TESTS "Enable build of unit tests" ON)
