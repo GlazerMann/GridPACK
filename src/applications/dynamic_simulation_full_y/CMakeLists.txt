@@ -13,6 +13,10 @@
 # Last Change: 2017-12-08 09:39:48 d3g096
 # -------------------------------------------------------------
 
+if (ENABLE_ENVIRONMENT_FROM_COMM)
+  add_definitions(-DENABLE_ENVIRONMENT_FROM_COMM)
+endif()
+
 set(target_libraries
     gridpack_dynamic_simulation_full_y_module
     gridpack_powerflow_module
