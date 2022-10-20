@@ -81,7 +81,6 @@ if (ENABLE_ENVIRONMENT_FROM_COMM)
   target_link_libraries(dsf_comm.x ${target_libraries})
 endif()
 
-
 add_custom_command(
   OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/input_145.xml"
   COMMAND ${CMAKE_COMMAND}
@@ -211,4 +210,3 @@ gridpack_add_run_test("dynamic_simulation_full_y" dsf.x input_145.xml)
 if (ENABLE_ENVIRONMENT_FROM_COMM)
   gridpack_add_run_test("dynamic_simulation_comm_full_y" dsf_comm.x input_145.xml)
 endif()
-
