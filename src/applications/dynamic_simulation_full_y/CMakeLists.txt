@@ -70,12 +70,16 @@ add_executable(dsf.x
    dsf_main.cpp
 )
 
-add_executable(dsf_comm.x
-   dsf_comm_main.cpp
-)
+if (ENABLE_ENVIRONMENT_FROM_COMM)
+  add_executable(dsf_comm.x
+     dsf_comm_main.cpp
+  )
+endif()
 
 target_link_libraries(dsf.x ${target_libraries})
-target_link_libraries(dsf_comm.x ${target_libraries})
+if (ENABLE_ENVIRONMENT_FROM_COMM)
+  target_link_libraries(dsf_comm.x ${target_libraries})
+endif()
 
 
 add_custom_command(
@@ -168,7 +172,9 @@ add_custom_target(dsf.x.input
 )
 
 add_dependencies(dsf.x dsf.x.input)
-add_dependencies(dsf_comm.x dsf.x.input)
+if (ENABLE_ENVIRONMENT_FROM_COMM)
+  add_dependencies(dsf_comm.x dsf.x.input)
+endif()
 
 # -------------------------------------------------------------
 # install as an example
@@ -202,5 +208,7 @@ install(TARGETS dsf.x DESTINATION bin)
 # run application as test
 # -------------------------------------------------------------
 gridpack_add_run_test("dynamic_simulation_full_y" dsf.x input_145.xml)
-gridpack_add_run_test("dynamic_simulation_comm_full_y" dsf_comm.x input_145.xml)
+if (ENABLE_ENVIRONMENT_FROM_COMM)
+  gridpack_add_run_test("dynamic_simulation_comm_full_y" dsf_comm.x input_145.xml)
+endif()
 
