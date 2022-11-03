@@ -10,7 +10,7 @@
 # -------------------------------------------------------------
 # -------------------------------------------------------------
 # Created January 27, 2020 by Perkins
-# Last Change: 2020-08-25 08:12:57 d3g096
+# Last Change: 2022-11-03 10:43:34 d3g096
 # -------------------------------------------------------------
 
 import sys, os
@@ -24,6 +24,10 @@ import gridpack.hadrec
 # -------------------------------------------------------------
 class GridPACKTester(TestCase):
     def hello_test(self):
+        c = gridpack.Communicator()
+        sys.stdout.write("hello from process %d of %d\n" %
+                         (c.rank(), c.size()))
+    def hello_comm_test(self):
         c = gridpack.Communicator()
         sys.stdout.write("hello from process %d of %d\n" %
                          (c.rank(), c.size()))
