@@ -10,7 +10,7 @@
 # -------------------------------------------------------------
 # -------------------------------------------------------------
 # Created January  8, 2014 by William A. Perkins
-# Last Change: 2019-10-29 13:08:56 d3g096
+# Last Change: 2022-11-03 09:30:16 d3g096
 # -------------------------------------------------------------
 
 function(gridpack_setup)
@@ -32,6 +32,8 @@ function(gridpack_setup)
   set(GRIDPACK_HAVE_GOSS @GOSS_DIR@)
   set(GRIDPACK_HAVE_APR @APR_DIR@)
   set(GRIDPACK_USE_OLD_PETSC @USE_OLD_PETSC@)
+
+  set(ENABLE_ENVIRONMENT_FROM_COMM @ENABLE_ENVIRONMENT_FROM_COMM@)
 
   find_library(GRIDPACK_COMPONENTS_LIBRARY
     NAMES gridpack_components
@@ -253,12 +255,21 @@ function(gridpack_setup)
     CACHE STRING "Libraries for GridPACK"
   )
 
+  # this needs to be better -- any defined macro used in a public
+  # header needs to be included here
+  set(gp_defs "")
+  if(ENABLE_ENVIRONMENT_FROM_COMM)
+    list(APPEND gp_defs "-DENABLE_ENVIRONMENT_FROM_COMM=1")
+  endif(ENABLE_ENVIRONMENT_FROM_COMM)
+
+  set(GRIDPACK_DEFINITIONS ${gp_defs}
+    CACHE STRING "Any compiler definitions/flags set in the GridPACK configuration"
+  )
+
+  message(STATUS "GridPACK compiler defines: ${gp_defs}")
   message(STATUS "Include directories for GridPACK: ${gp_include}")
   message(STATUS "Libraries for GridPACK: ${gp_libs}")
-  # set(GRIDPACK_DEFINITIONS
-  #   "@GRIDPACK_DEFINITIONS@"
-  #   CACHE STRING "Any compiler definitions/flags set in the GridPACK configuration"
-  # )
+
 endfunction(gridpack_setup)
 
 set(GRIDPACK_C_COMPILER @CMAKE_C_COMPILER@)
