@@ -10,7 +10,7 @@
 # -------------------------------------------------------------
 # -------------------------------------------------------------
 # Created May  3, 2013 by William A. Perkins
-# Last Change: 2022-10-05 09:26:46 d3g096
+# Last Change: 2022-11-03 06:28:01 d3g096
 # -------------------------------------------------------------
 
 # 
@@ -130,7 +130,7 @@ option(BUILD_SHARED_LIBS
   "Attempt to build all libraries as shared" OFF)
 
 option(ENABLE_ENVIRONMENT_FROM_COMM,
-  "Create GridPACK environment from communicator",OFF)
+  "Create GridPACK environment from communicator" OFF)
 
 
 # turn testing on/off
