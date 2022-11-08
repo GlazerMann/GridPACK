@@ -10,7 +10,7 @@
 # -------------------------------------------------------------
 # -------------------------------------------------------------
 # Created May  3, 2013 by William A. Perkins
-# Last Change: 2022-11-03 06:28:01 d3g096
+# Last Change: 2022-11-08 13:05:18 d3g096
 # -------------------------------------------------------------
 
 # 
@@ -129,7 +129,7 @@ option(USE_GLPK
 option(BUILD_SHARED_LIBS
   "Attempt to build all libraries as shared" OFF)
 
-option(ENABLE_ENVIRONMENT_FROM_COMM,
+option(ENABLE_ENVIRONMENT_FROM_COMM
   "Create GridPACK environment from communicator" OFF)
 
 
