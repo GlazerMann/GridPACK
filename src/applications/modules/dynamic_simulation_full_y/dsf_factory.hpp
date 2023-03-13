@@ -3,18 +3,6 @@
  *     Licensed under modified BSD License. A copy of this license can be found
  *     in the LICENSE file in the top level directory of this distribution.
  */
-// -------------------------------------------------------------
-/**
- * @file   dsf_factory.hpp
- * @author Shuangshuang Jin 
- * @date   Feb 04, 2015
- * @last modified date   May 13, 2015
- * 
- * @brief  
- * 
- * 
- */
-// -------------------------------------------------------------
 
 #ifndef _dsf_factory_h_
 #define _dsf_factory_h_

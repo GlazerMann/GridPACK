@@ -3,22 +3,10 @@
  *     Licensed under modified BSD License. A copy of this license can be found
  *     in the LICENSE file in the top level directory of this distribution.
  */
-// -------------------------------------------------------------
-/**
- * @file   dsf_components.hpp
- * @author Shuangshuang Jin 
- * @Last modified:   May 13, 2015
- * 
- * @brief  
- * 
- * 
- */
-// -------------------------------------------------------------
 
 #ifndef _dsf_components_h_
 #define _dsf_components_h_
 
-//#define USE_FNCS
 /**
  * Some preprocessor string declarations. These will need to be put in an
  * include file someplace else. Just declare them here for the time being.
@@ -65,37 +53,28 @@ class DSFullBus
 {
   public:
 
-#ifdef USE_FNCS
-    /**
-     * Data package for use with FNCS framework
-     */
-    typedef struct{int busID;
-      gridpack::ComplexType voltage;
-    } voltage_data;
-#endif
-
-    /**
-     *  Simple constructor
-     */
-    DSFullBus(void);
-
-    /**
-     *  Simple destructor
-     */
-    ~DSFullBus(void);
-
-    /**
-     * Return size of matrix block on the diagonal contributed by
-     * component
-     * @param isize, jsize: number of rows and columns of matrix block
-     * @return: false if network component does not contribute matrix
-     *        element
-     */
-    bool matrixDiagSize(int *isize, int *jsize) const;
-
-    /**
-     * Return the values of for a diagonal matrix block. The values are
-     * returned in row-major order
+  /**
+   *  Simple constructor
+   */
+  DSFullBus(void);
+  
+  /**
+   *  Simple destructor
+   */
+  ~DSFullBus(void);
+  
+  /**
+   * Return size of matrix block on the diagonal contributed by
+   * component
+   * @param isize, jsize: number of rows and columns of matrix block
+   * @return: false if network component does not contribute matrix
+   *        element
+   */
+  bool matrixDiagSize(int *isize, int *jsize) const;
+  
+  /**
+   * Return the values of for a diagonal matrix block. The values are
+   * returned in row-major order
      * @param values: pointer to matrix block values
      * @return: false if network component does not contribute
      *        matrix element

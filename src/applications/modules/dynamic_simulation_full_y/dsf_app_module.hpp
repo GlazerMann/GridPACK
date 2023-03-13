@@ -3,17 +3,6 @@
  *     Licensed under modified BSD License. A copy of this license can be found
  *     in the LICENSE file in the top level directory of this distribution.
  */
-// -------------------------------------------------------------
-/**
- * @file   dsf_app_module.hpp
- * @author Shuangshuang Jin
- * @date   2020-02-12 12:17:37 d3g096
- *
- * @brief
- *
- *
- */
-// -------------------------------------------------------------
 
 #ifndef _dsf_app_module_h_
 #define _dsf_app_module_h_
@@ -29,16 +18,14 @@
 #include "gridpack/mapper/bus_vector_map.hpp"
 #include "gridpack/math/math.hpp"
 #include "gridpack/parser/dictionary.hpp"
-//#include "gridpack/applications/modules/hadrec/hadrec_app_module.hpp"
-
 
 namespace gridpack {
 namespace dynamic_simulation {
 
-    // Calling program for dynamic simulation application
+  // Dynamics simulation application class
 
 class DSFullApp
-{
+  {
   public:
 
     /**
@@ -729,33 +716,33 @@ class DSFullApp
     // pointer to factory
     boost::shared_ptr<DSFullFactory> p_factory;
 	
-	// whether iteratively solve the network interface 
-	bool p_biterative_solve_network;
-	double ITER_TOL;  // iteratively solve the network interface tolerance, defined in xml file
-	int MAX_ITR_NO;   // iteratively solve the network interface max iteration number, defined in xml file
+    // whether iteratively solve the network interface 
+    bool p_biterative_solve_network;
+    double ITER_TOL;  // iteratively solve the network interface tolerance, defined in xml file
+    int MAX_ITR_NO;   // iteratively solve the network interface max iteration number, defined in xml file
 	
-	// whether print out debug information for iteratively solve the network interface 
-	bool p_iterative_network_debug;
-	
-	//for the generator observations, output the generator power based on system base or generator base
-	bool p_generator_observationpower_systembase;
-
+    // whether print out debug information for iteratively solve the network interface 
+    bool p_iterative_network_debug;
+    
+    //for the generator observations, output the generator power based on system base or generator base
+    bool p_generator_observationpower_systembase;
+    
     // Simulation time
     double p_sim_time;
-
+    
     // Time step
     double p_time_step;
-
+    
     // Current step count?
     int p_S_Steps;
-
+    
     // pointer to bus IO module
     boost::shared_ptr<gridpack::serial_io::SerialBusIO<DSFullNetwork> >
-      p_busIO;
+    p_busIO;
 
     // pointer to branch IO module
     boost::shared_ptr<gridpack::serial_io::SerialBranchIO<DSFullNetwork> >
-      p_branchIO;
+    p_branchIO;
 
     // pointer to configuration module
     gridpack::utility::Configuration *p_config;
@@ -769,14 +756,14 @@ class DSFullApp
     // flag indicating whether or not to use application supplied generator
     // watch file name or name from input deck
     bool p_internal_watch_file_name;
-
+    
     // flag indicating whether or not generators to be monitored have
     // already been read in
     bool p_generators_read_in;
-
+    
     // Flag indicating that generators are to be monitored
     bool p_generatorWatch;
-
+    
     // Frequency to write out generator watch results
     int p_generatorWatchFrequency;
 
@@ -792,18 +779,18 @@ class DSFullApp
     // Tags of generators that are being monitors
     std::vector<std::string> p_watch_gen_ids;
 	
-	//branches need to be tripped at a specific dynamic simulation step
-	std::vector<gridpack::dynamic_simulation::DSFullBranch*> p_vbranches_need_to_trip;
+    //branches need to be tripped at a specific dynamic simulation step
+    std::vector<gridpack::dynamic_simulation::DSFullBranch*> p_vbranches_need_to_trip;
 	
-	//flag indicating whether there is/are branches need to be tripped at a specific dynamic simulation step
-	bool bapplyLineTripAction;
+    //flag indicating whether there is/are branches need to be tripped at a specific dynamic simulation step
+    bool bapplyLineTripAction;
 	
-	//flag indicating whether there is/are bus load P or Q change at a specific dynamic simulation step
-	bool bapplyLoadChangeP;
-	bool bapplyLoadChangeQ;
+    //flag indicating whether there is/are bus load P or Q change at a specific dynamic simulation step
+    bool bapplyLoadChangeP;
+    bool bapplyLoadChangeQ;
 	
-	std::vector<gridpack::dynamic_simulation::DSFullBus*> p_vbus_need_to_changeP;
-	std::vector<gridpack::dynamic_simulation::DSFullBus*>p_vbus_need_to_changeQ;
+    std::vector<gridpack::dynamic_simulation::DSFullBus*> p_vbus_need_to_changeP;
+    std::vector<gridpack::dynamic_simulation::DSFullBus*>p_vbus_need_to_changeQ;
 
 
     // Monitor generators for instability
@@ -815,7 +802,7 @@ class DSFullApp
 
     // pointer to bus IO module that is used for generator results
     boost::shared_ptr<gridpack::serial_io::SerialBusIO<DSFullNetwork> >
-      p_generatorIO;
+    p_generatorIO;
 
     // Flag indicating that loads are to be monitored
     bool p_loadWatch;
@@ -828,20 +815,20 @@ class DSFullApp
 
     // pointer to bus IO module that is used for load results
     boost::shared_ptr<gridpack::serial_io::SerialBusIO<DSFullNetwork> >
-      p_loadIO;
+    p_loadIO;
 
-   // Keep track of whether or not systsem is secure
-   int p_insecureAt;
-
-   // Global list of all generators that are being watched
-   std::map<std::pair<int,std::string>, int> p_watch_list;
-
-   // Flag to save time series
-   bool p_save_time_series;
-
-   // Vector of times series from watched generators
-   std::vector<std::vector<double> > p_time_series;
-
+    // Keep track of whether or not systsem is secure
+    int p_insecureAt;
+    
+    // Global list of all generators that are being watched
+    std::map<std::pair<int,std::string>, int> p_watch_list;
+    
+    // Flag to save time series
+    bool p_save_time_series;
+    
+    // Vector of times series from watched generators
+    std::vector<std::vector<double> > p_time_series;
+    
    // Record bus ID where frequency violation occured
    std::vector<int> p_violations;
 
