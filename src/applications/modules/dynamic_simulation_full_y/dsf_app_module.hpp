@@ -18,6 +18,7 @@
 #include "gridpack/mapper/bus_vector_map.hpp"
 #include "gridpack/math/math.hpp"
 #include "gridpack/parser/dictionary.hpp"
+#include "gridpack/applications/modules/powerflow/pf_app_module.hpp"
 
 namespace gridpack {
 namespace dynamic_simulation {
@@ -79,6 +80,16 @@ class DSFullApp
      * Read sequence data from a file.
      */
     void readSequenceData();
+
+    /**
+     * Transfer data from power flow to dynamic simulation
+     * @param pf_network power flow network
+     * @param ds_network dynamic simulation network
+     */
+    void transferPFtoDS(boost::shared_ptr<gridpack::powerflow::PFNetwork>
+    pf_network,
+			boost::shared_ptr<gridpack::dynamic_simulation::DSFullNetwork>
+    ds_network);
 
     /**
      * Set up exchange buffers and other internal parameters and initialize
@@ -185,7 +196,7 @@ class DSFullApp
      * execute Constant Y load Q change	 
      */
     void applyConstYLoad_Change_Q(int bus_number, double loadPChangeMVAR);
-	void clearConstYLoad_Change_Q();
+    void clearConstYLoad_Change_Q();
 	
 	void setConstYLoadtoZero_P(int bus_number);
 	void setConstYLoadtoZero_Q(int bus_number);
@@ -200,34 +211,34 @@ class DSFullApp
      */
     void applyGeneratorTripping(int bus_number, std::string genid);
 	
-	/**
-	* set all the necessery flags for the two buses and one branch for the line needs to trip
-	* this function is for single branch flags set-up, may need to be called
-	* multiple times for multiple line tripping 
-	*/
-	void setLineTripAction(int brch_from_bus_number, int brch_to_bus_number, std::string branch_ckt);
+    /**
+     * set all the necessery flags for the two buses and one branch for the line needs to trip
+     * this function is for single branch flags set-up, may need to be called
+     * multiple times for multiple line tripping 
+     */
+    void setLineTripAction(int brch_from_bus_number, int brch_to_bus_number, std::string branch_ckt);
 	
-	/**
-	* set all the necessery flags for the two buses and one branch for the line needs to trip
-	* this function will trip a branch, given a bus number, just find any one of the 
-	* connected line(not transformer) with the bus, and trip that one
-	* this function is for single branch flags set-up, may need to be called
-	* multiple times for multiple line tripping 
-	*/
-	void setLineTripAction(int bus_number);
+    /**
+     * set all the necessery flags for the two buses and one branch for the line needs to trip
+     * this function will trip a branch, given a bus number, just find any one of the 
+     * connected line(not transformer) with the bus, and trip that one
+     * this function is for single branch flags set-up, may need to be called
+     * multiple times for multiple line tripping 
+     */
+    void setLineTripAction(int bus_number);
 	
-	/**
-	* clear all the necessery flags for the all buses and branches for the lines needs to trip
-	* this function is for all the branches' flags clear-up, just need to be called
-	* once to clear all the tripping lines's flag
-	*/
-	void clearLineTripAction();
-	
-	/**
+    /**
+     * clear all the necessery flags for the all buses and branches for the lines needs to trip
+     * this function is for all the branches' flags clear-up, just need to be called
+     * once to clear all the tripping lines's flag
+     */
+    void clearLineTripAction();
+    
+    /**
      * Check whether the dynamic simulation is done
      */
     bool isDynSimuDone();
-
+    
     /**
      * Write out final results of dynamic simulation calculation to standard output
      */
@@ -239,7 +250,7 @@ class DSFullApp
      * @return a list of fault events
      */
     std::vector<gridpack::dynamic_simulation::Event>
-      getFaults(gridpack::utility::Configuration::CursorPtr cursor);
+    getFaults(gridpack::utility::Configuration::CursorPtr cursor);
 
     /**
      * Read in generators that should be monitored during simulation

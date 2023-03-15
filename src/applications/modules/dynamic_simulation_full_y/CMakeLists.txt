@@ -17,8 +17,8 @@
 
 set(target_libraries
     gridpack_dsmatrix_components
-    gridpack_ymatrix_components
     gridpack_powerflow_module
+    gridpack_ymatrix_components	
     gridpack_components
     gridpack_stream
     gridpack_block_parsers

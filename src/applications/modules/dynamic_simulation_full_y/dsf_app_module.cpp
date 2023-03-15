@@ -3,17 +3,7 @@
  *     Licensed under modified BSD License. A copy of this license can be found
  *     in the LICENSE file in the top level directory of this distribution.
  */
-// -------------------------------------------------------------
-/**
- * @file   ds_app.cpp
- * @author Shuangshuang Jin
- * @Last modified:  May 13, 2015
- *
- * @brief
- *
- *
- */
-// -------------------------------------------------------------
+
 //
 //#define USE_TIMESTAMP
 
@@ -22,13 +12,8 @@
 #include "gridpack/parser/PTI34_parser.hpp"
 #include "gridpack/parser/PTI35_parser.hpp"
 #include "gridpack/parser/PSSE_seq_parser.hpp"
-//#include "gridpack/mapper/full_map.hpp"
-//#include "gridpack/mapper/bus_vector_map.hpp"
-//#include "gridpack/math/math.hpp"
 #include "gridpack/parallel/global_vector.hpp"
 #include "dsf_app_module.hpp"
-//#include "gridpack/component/base_component.hpp"
-//#include "hadrec_app_module.hpp"
 #include <iostream>
 #include <string>
 #include <vector>
@@ -4647,3 +4632,43 @@ bool gridpack::dynamic_simulation::DSFullApp::modifyDataCollectionBusParam(
 {
   return p_modifyDataCollectionBusParam<int>(bus_id,busParam,value);
 }
+
+/**
+ * Transfer data from power flow to dynamic simulation
+ * @param pf_network power flow network
+ * @param ds_network dynamic simulation network
+ */
+void gridpack::dynamic_simulation::DSFullApp::transferPFtoDS(
+    boost::shared_ptr<gridpack::powerflow::PFNetwork>
+    pf_network,
+    boost::shared_ptr<gridpack::dynamic_simulation::DSFullNetwork>
+    ds_network)
+{
+  int numBus = pf_network->numBuses();
+  int i;
+  gridpack::component::DataCollection *pfData;
+  gridpack::component::DataCollection *dsData;
+  double rval;
+  for (i=0; i<numBus; i++) {
+    pfData = pf_network->getBusData(i).get();
+    dsData = ds_network->getBusData(i).get();
+    pfData->getValue("BUS_PF_VMAG",&rval);
+    dsData->setValue(BUS_VOLTAGE_MAG,rval);
+
+    pfData->getValue("BUS_PF_VANG",&rval);
+    dsData->setValue(BUS_VOLTAGE_ANG,rval);
+    int ngen = 0;
+    if (pfData->getValue(GENERATOR_NUMBER, &ngen)) {
+      int j;
+      for (j=0; j<ngen; j++) {
+        pfData->getValue("GENERATOR_PF_PGEN",&rval,j);
+        dsData->setValue(GENERATOR_PG,rval,j);
+
+        pfData->getValue("GENERATOR_PF_QGEN",&rval,j);
+        dsData->setValue(GENERATOR_QG,rval,j);
+
+      }
+    }
+  }
+}
+
