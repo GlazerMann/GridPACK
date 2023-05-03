@@ -756,6 +756,7 @@ double gridpack::dynamic_simulation::GensalGenerator::getFieldVoltage()
 bool gridpack::dynamic_simulation::GensalGenerator::serialWrite(
     char* string, const int bufsize, const char *signal)
 {
+  string[0] = '\0';
   if (!strcmp(signal,"standard")) {
     //sprintf(string,"      %8d            %2s    %12.6f    %12.6f    %12.6f    %12.6f\n",
     //    p_bus_id,p_ckt.c_str(),real(p_mac_ang_s1),real(p_mac_spd_s1),real(p_mech),
@@ -791,7 +792,7 @@ bool gridpack::dynamic_simulation::GensalGenerator::serialWrite(
 */
     }
   } else if (!strcmp(signal,"debug_initial")) {
-  return false;
+    return false;
   }
 }
 
