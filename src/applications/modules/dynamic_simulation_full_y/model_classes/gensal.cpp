@@ -794,6 +794,7 @@ bool gridpack::dynamic_simulation::GensalGenerator::serialWrite(
   } else if (!strcmp(signal,"debug_initial")) {
     return false;
   }
+  return false;
 }
 
 /**
